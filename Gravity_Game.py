@@ -14,6 +14,11 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.rect = pygame.Rect(x,y,w,h)
 
+class Powerup(pygame.sprite.Sprite):
+    def __init__(self, x, y, w, h):
+        pygame.sprite.Sprite.__init__(self)
+        self.rect = pygame.Rect(x,y,w,h)
+
 class Rect(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h):
         pygame.sprite.Sprite.__init__(self)
@@ -42,15 +47,17 @@ cyan = (0, 255, 255)
 yellow = (255, 255, 0)
 red = (255, 0, 0)
 green = (0, 255, 0)
-color = white
+color = cyan
 
 g = 11
 v = 5
+test = 0
 points = 0
 move = True
 last_platform_x, last_platform_y = 0, 0
 
 player = Player(200, 476, 25, 25)
+grav_use = Powerup(0, -100, 50, 50)
 
 r1 = Rect(125, 500, 300, 10)
 r2 = Rect(420, random.randint(10, (height-20)), 200, 10)
@@ -78,7 +85,7 @@ while True:
             if 35 > abs((rectangle.rect.y - last_platform_y)):
                 rectangle.rect.y = random.randint(10, (height-20))
                 
-        pygame.draw.rect(screen, color, rectangle.rect)
+        pygame.draw.rect(screen, white, rectangle.rect)
         last_platform_x = (rectangle.rect.x + rectangle.rect.width) - 5
         last_platform_y = rectangle.rect.y
         
@@ -96,17 +103,31 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                if move == False:
+                if (move == False) or (color == green):
+                    if move:
+                        test = 1
                     g = -g
                     move = True
                     
-        
-    pygame.draw.rect(screen, cyan, player.rect)
+    pygame.draw.rect(screen, green, grav_use.rect)
+    grav_use.rect = grav_use.rect.move(-v, 0)
+    if player.rect.colliderect(grav_use.rect):
+        color = green
+        grav_use.rect = pygame.Rect(0, -100, 50, 50)
+    if test == 1:
+        color = cyan
+        test = 0
+    
+    pygame.draw.rect(screen, color, player.rect)
     if move:
         player.rect = player.rect.move(0, g)
+        
     distance = font.render(str(points), True, yellow)
     screen.blit(distance,(15, 0))
+    
     points += 1
+    if (points%500) == 0:
+        grav_use.rect.x, grav_use.rect.y = 1610, random.randint(10, (height-20))
 
         
 #-----------------------------------------Reset--------------------------------------------
@@ -149,6 +170,7 @@ while True:
                     points = 0
                     move = True
                     g = abs(g)
+                    color = cyan
                     r1.rect = pygame.Rect(125, 500, 300, 10)
                     r2.rect = pygame.Rect(420, random.randint(10, (height-20)), 200, 10)
                     r3.rect = pygame.Rect(615, random.randint(10, (height-20)), 100, 10)
@@ -165,8 +187,8 @@ while True:
                     distance = font.render(str(points), True, yellow)
                     screen.blit(distance,(15, 0))
                     for rectangle in rect_group:
-                        pygame.draw.rect(screen, color, rectangle.rect)
-                    pygame.draw.rect(screen, cyan, player.rect)
+                        pygame.draw.rect(screen, white, rectangle.rect)
+                    pygame.draw.rect(screen, color, player.rect)
                     pygame.display.update()
                     time.sleep(2)
                     break

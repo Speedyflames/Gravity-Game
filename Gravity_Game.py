@@ -26,6 +26,7 @@ class Rect(pygame.sprite.Sprite):
         rect_group.add(self)
 
 width, height = 1600, 870
+pygame.mixer.pre_init(44100, 16, 2, 4096)
 pygame.init()
 
 font = pygame.font.SysFont("Verdana", 30)
@@ -37,6 +38,9 @@ no = pygame.font.SysFont("Verdana", 35)
 screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
 pygame.display.set_caption("Gravity Game")
 clock = pygame.time.Clock()
+pygame.mixer.music.load("Music.mp3")
+pygame.mixer.music.set_volume(0.3)
+pygame.mixer.music.play(-1)
 #--------------------------------------------------------------
 
 
@@ -125,9 +129,9 @@ while True:
     distance = font.render(str(points), True, yellow)
     screen.blit(distance,(15, 0))
     
-    points += 1
     if (points%500) == 0:
-        grav_use.rect.x, grav_use.rect.y = 1610, random.randint(10, (height-20))
+        grav_use.rect.x, grav_use.rect.y = 1610, random.randint(10, (height-60))
+    points += 1
 
         
 #-----------------------------------------Reset--------------------------------------------
@@ -182,6 +186,7 @@ while True:
                     r9.rect = pygame.Rect(1785, random.randint(10, (height-20)), 100, 10)
                     r10.rect = pygame.Rect(1880, random.randint(10, (height-20)), 200, 10)
                     player.rect = pygame.Rect(200, 476, 25, 25)
+                    grav_use.rect.x, grav_use.rect.y = 0, -100
 
                     screen.fill(black)
                     distance = font.render(str(points), True, yellow)

@@ -38,7 +38,7 @@ no = pygame.font.SysFont("Verdana", 35)
 screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
 pygame.display.set_caption("Gravity Game")
 clock = pygame.time.Clock()
-pygame.mixer.music.load("Music.mp3")
+pygame.mixer.music.load(os.path.abspath("Music.mp3"))
 pygame.mixer.music.set_volume(0.3)
 pygame.mixer.music.play(-1)
 #--------------------------------------------------------------

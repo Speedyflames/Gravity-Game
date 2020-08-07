@@ -56,7 +56,7 @@ screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption("Gravity Game")
 clock = pygame.time.Clock()
 
-pygame.mixer.music.load(os.path.abspath("Music.mp3"))
+pygame.mixer.music.load(os.path.abspath("Music.mp3"))   #Put the full path to the music
 pygame.mixer.music.set_volume(0.4)
 pygame.mixer.music.play(-1)
 

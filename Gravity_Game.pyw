@@ -1,7 +1,5 @@
 from ctypes import windll
 import os
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-windll.shcore.SetProcessDpiAwareness(1)
 import pygame
 import sys
 import random
@@ -9,6 +7,7 @@ import time
 
 
 #----------------------------Setup------------------------------
+windll.shcore.SetProcessDpiAwareness(1)
 rect_group = pygame.sprite.Group()
 
 class Player(pygame.sprite.Sprite):
